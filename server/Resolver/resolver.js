@@ -1,5 +1,4 @@
-const { books, authors } = require("../Data/static.js");
-const resolve = {
+const resolves = {
 	//* Queries
 	Query: {
 		books: async (parent, args, { dbMethods }) => await dbMethods.getAllBooks(),
@@ -7,15 +6,16 @@ const resolve = {
 			await dbMethods.getBookById(args.id),
 		authors: async (parent, args, { dbMethods }) =>
 			await dbMethods.getAllAuthors(),
-		author: (parent, args) => authors.find((author) => author.id == args.id),
+		author: async (parent, args, { dbMethods }) =>
+			await dbMethods.getAuthorById(args.id),
 	},
 	Books: {
-		author: (parent, args) =>
-			authors.find((author) => author.id == parent.author_id),
+		author: async (parent, args, { dbMethods }) =>
+			dbMethods.getAuthorById(parent.author_id),
 	},
 	Author: {
-		books: (parent, args) =>
-			books.filter((book) => book.author_id == parent.id),
+		books: async (parent, args, { dbMethods }) =>
+			await dbMethods.getAllBookByAuthorId(parent.id),
 	},
 
 	//* Mutations
@@ -27,4 +27,4 @@ const resolve = {
 	},
 };
 
-module.exports = resolve;
+module.exports = resolves;
