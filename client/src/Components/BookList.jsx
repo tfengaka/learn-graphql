@@ -39,7 +39,15 @@ const BookList = () => {
 				))}
 			</Col>
 			<Col>
-				{selectedBook ? <BookDetail bookSelectedID={selectedBook} /> : null}
+				{selectedBook ? (
+					<BookDetail bookSelectedID={selectedBook} />
+				) : (
+					<Card bg="info" text="white" className="shadow">
+						<Card.Body className="text-center">
+							<Card.Text>Please select a book</Card.Text>
+						</Card.Body>
+					</Card>
+				)}
 			</Col>
 		</Row>
 	);
